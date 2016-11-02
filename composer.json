@@ -35,7 +35,7 @@
 		"ext-date": "*",
 		"ext-hash": "*",
 		"ext-json": "*",
-        "simplesamlphp/saml2": "~2.2",
+        "simplesamlphp/saml2": "2.2",
         "robrichards/xmlseclibs": "~2.0",
         "whitehat101/apr1-md5": "~1.0",
         "twig/twig": "~1.0",

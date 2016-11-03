@@ -25,7 +25,7 @@ if ($this->data['isadmin']) {
 
 
 <div style="margin-top: 1em;">
-	<code style="background: white; background: #f5f5f5; border: 1px dotted #bbb; padding: 1em;  color: #555" ><?php 
+	<code style="background: white; background: #f5f5f5; border: 1px dotted #bbb; padding: 1em;  color: #555; line-height: 40px;" ><?php
 		echo $this->data['directory'] . ' (' . $this->data['version'] . ')'; 
 	?></code>
 </div>

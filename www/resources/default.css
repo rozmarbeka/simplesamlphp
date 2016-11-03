@@ -9,9 +9,7 @@
 body {
 	text-align: center;
 	padding: 10px 0;
-	background: #1c1c1c;
-/*	background-image: url(icons/ssplogo-fish.png);
-	background-repeat: no-repeat; */
+	background: #ececec;
 	color: #333;
 	font: 83%/1.5 arial,tahoma,verdana,sans-serif;
 }
@@ -91,13 +89,14 @@ dt {
 
 #wrap {
 	background: #fff;
-	
-	border: 1px solid #fff;
+	box-shadow: 2px 3px 4px rgba(0,0,0,0.1);
 	position: relative;
 	text-align: left;
 	
-	margin: 20px 75px 2em 75px;
-	max-width: 950px;
+	margin: 0 auto;
+	max-width: 600px;
+	border-radius: 5px;
+	overflow: hidden;
 }
 
 #languagebar {
@@ -118,20 +117,55 @@ dt {
 }
 
 #header {
-	background: #666 url("header-bkg.png") repeat-x 0 100%;
+	background: #666 url("header-atlas.png") repeat-x 0 100%;
 	margin: 0px;
 	padding: 0 0 8px;
 }
 
 #header h1 {
-	color: #fff;
-	font-size: 145%;
+	text-transform: uppercase;
+	color: #55b6df;
+	font-size: 15.5px;
 	padding: 20px 20px 12px;
+	font-weight: normal;
+	letter-spacing: 0.1px;
+}
+
+#header h1 img {
+	display: inline-block;
+	margin-bottom: -1px;
 }
 
 
 #content, #footer {
 	padding: 0 20px;
+}
+
+#content .login-form table {
+	margin-left: 75px;
+}
+
+#content .login-error {
+	padding-top: 7px;
+	border-radius: 5px;
+	border-left: 1px solid #e8e8e8;
+	border-bottom: 1px solid #e8e8e8;
+	background: #f5f5f5
+}
+
+#content .login-error img {
+	margin: 0 10px;
+}
+
+#content .login-error p {
+	margin: 5px;
+}
+
+#footer .atlas-logo {
+	float: right;
+	width: 75px;
+	margin-top: -5px;
+	margin-bottom: 10px;
 }
 
 /* TYPOGRAPHY */
@@ -192,8 +226,9 @@ h1 a:hover {
 	border-bottom: 1px dotted #eee;
 }
 
-#content {
-	margin-top: 2em;
+#content,
+#content h2 {
+	margin-top: 10px;
 }
 
 .old {

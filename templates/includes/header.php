@@ -125,15 +125,13 @@ if($onLoad !== '') {
 <div id="wrap">
 	
 	<div id="header">
-		<h1><a href="/<?php echo $this->data['baseurlpath']; ?>"><?php
-			echo (isset($this->data['header']) ? $this->data['header'] : 'SimpleSAMLphp');
-		?></a></h1>
+		<h1><img src="/<?php echo $this->data['baseurlpath'] ?>resources/icons/atlassoft7a.png" alt="Atlas Soft Dashboard" /> Dashboard</h1>
 	</div>
 
 	
 	<?php 
 	
-	$includeLanguageBar = TRUE;
+	$includeLanguageBar = false;
 	if (!empty($_POST)) 
 		$includeLanguageBar = FALSE;
 	if (isset($this->data['hideLanguageBar']) && $this->data['hideLanguageBar'] === TRUE) 

@@ -9,8 +9,8 @@ if(!empty($this->data['htmlinject']['htmlContentPost'])) {
 	<div id="footer">
 		<hr />
 
-		<img src="/<?php echo $this->data['baseurlpath']; ?>resources/icons/ssplogo-fish-small.png" alt="Small fish logo" style="float: right" />		
-		Copyright &copy; 2007-2016 <a href="http://uninett.no/">UNINETT AS</a>
+		<img class="atlas-logo" src="/<?php echo $this->data['baseurlpath'] ?>resources/icons/atlassoft7a.png" alt="Atlas Soft Dashboard" />
+		Copyright © 2016 <a href="https://atlassoft.hu">Atlas Soft Kft</a>
 		
 		<br style="clear: right" />
 	

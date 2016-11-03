@@ -15,7 +15,7 @@
 	<?php } ?>
 
 	<h2 style="break: both"><?php echo $this->t('user_pass_header'); ?></h2>
-	
+
 	<p class="logintext"><?php echo $this->t('user_pass_text'); ?></p>
 	
 	<form action="?" method="post" name="f">
@@ -63,8 +63,8 @@
 	
 	
 	<h2 class="logintext"><?php echo $this->t('help_header'); ?></h2>
-	
-	
+
+
 	<p class="logintext"><?php echo $this->t('help_text'); ?></p>
 	
 

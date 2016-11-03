@@ -13,11 +13,9 @@ $this->includeAtTemplateBase('includes/header.php');
 <?php
 if ($this->data['errorcode'] !== null) {
     ?>
-    <div style="border-left: 1px solid #e8e8e8; border-bottom: 1px solid #e8e8e8; background: #f5f5f5">
+    <div class="login-error">
         <img src="/<?php echo $this->data['baseurlpath']; ?>resources/icons/experience/gtk-dialog-error.48x48.png"
-             class="float-l erroricon" style="margin: 15px" alt=""/>
-
-        <h2><?php echo $this->t('{login:error_header}'); ?></h2>
+             class="float-l erroricon" alt=""/>
 
         <p><strong><?php
             echo htmlspecialchars($this->t($this->data['errorcodes']['title'][$this->data['errorcode']], $this->data['errorparams'])); ?></strong></p>
@@ -29,11 +27,9 @@ if ($this->data['errorcode'] !== null) {
 }
 
 ?>
-    <h2 style="break: both"><?php echo $this->t('{login:user_pass_header}'); ?></h2>
+    <h2 style="break: both">Bejelentkezés</h2>
 
-    <p class="logintext"><?php echo $this->t('{login:user_pass_text}'); ?></p>
-
-    <form action="?" method="post" name="f">
+    <form action="?" method="post" name="f" class="login-form">
         <table>
             <tr>
                 <td rowspan="2" id="loginicon">
@@ -179,7 +175,5 @@ if (!empty($this->data['links'])) {
     }
     echo '</ul>';
 }
-echo('<h2 class="logintext">'.$this->t('{login:help_header}').'</h2>');
-echo('<p class="logintext">'.$this->t('{login:help_text}').'</p>');
 
 $this->includeAtTemplateBase('includes/footer.php');

@@ -27,7 +27,7 @@ if ($this->data['errorcode'] !== null) {
 }
 
 ?>
-    <h2 style="break: both">Bejelentkezés</h2>
+    <h2 style="break: both">Bejelentkezés<span class="mobile-logo"><img src="/<?php echo $this->data['baseurlpath'] ?>resources/icons/atlassoft7a.png" alt="Atlas Soft" /></span></h2>
 
     <form action="?" method="post" name="f" class="login-form">
         <table>
@@ -153,12 +153,13 @@ if ($this->data['errorcode'] !== null) {
                 </td>
             </tr>
             <tr id="mobilesubmit">
-                <td></td><td></td>
+                <td></td>
                 <td>
                     <button class="btn" tabindex="6">
                         <?php echo $this->t('{login:login_button}'); ?>
                     </button>
                 </td>
+                <td></td>
             </tr>
         </table>
         <?php

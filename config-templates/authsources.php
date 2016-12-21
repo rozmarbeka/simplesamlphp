@@ -70,7 +70,11 @@ $config = array(
         'dsn' => 'pgsql:host=sql.example.org;port=5432;dbname=simplesaml',
         'username' => 'simplesaml',
         'password' => 'secretpassword',
-        'query' => 'SELECT uid, givenName, email, eduPersonPrincipalName FROM users WHERE uid = :username AND password = SHA2(CONCAT((SELECT salt FROM users WHERE uid = :username), :password),256);',
+        'query' => 'SELECT uid, givenName, email, eduPersonPrincipalName FROM users WHERE uid = :username AND password = SHA2(CONCAT((SELECT salt FROM users WHERE uid = :username), :password),256) AND (u.bannedAt IS NULL OR CURRENT_TIMESTAMP > u.bannedAt + (60 * 30) * interval "1 second");',
+        'maxFailedLoginAttempts' => 5,
+        'failedLoginAttemptsQuery' => 'SELECT u.failedLoginAttempts FROM users u WHERE u.username = :username',
+        'failedLoginAttemptsUpdate' => 'UPDATE users SET failedLoginAttempts = :failedLoginAttempts WHERE username = :username',
+        'bannedAtUpdate' => 'UPDATE users SET bannedAt = :bannedAt WHERE username = :username'
     ),
     */
 

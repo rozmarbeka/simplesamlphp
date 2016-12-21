@@ -36,6 +36,30 @@ class sspmod_sqlauth_Auth_Source_SQL extends sspmod_core_Auth_UserPassBase {
 	 */
 	private $query;
 
+    /** @var int */
+    private $maxFailedLoginAttempts;
+
+	/**
+	 * The query we should use to update failed login attempts count for the user.
+	 *
+	 * The username will be available as :username.
+	 */
+	private $failedLoginAttemptsQuery;
+
+	/**
+	 * The query we should use to update failed login attempts count for the user.
+	 *
+	 * The username and failedLoginAttempts will be available as :username and :failedLoginAttempts.
+	 */
+	private $failedLoginAttemptsUpdate;
+
+	/**
+     * The query we should use to update bannedAt field for the user.
+     *
+	 * The username and bannedAt will be available as :username and :bannedAt.
+	 */
+	private $bannedAtUpdate;
+
 
 	/**
 	 * Constructor for this authentication source.
@@ -69,6 +93,14 @@ class sspmod_sqlauth_Auth_Source_SQL extends sspmod_core_Auth_UserPassBase {
 		$this->username = $config['username'];
 		$this->password = $config['password'];
 		$this->query = $config['query'];
+
+		$this->maxFailedLoginAttempts = isset($config['maxFailedLoginAttempts']) ? $config['maxFailedLoginAttempts'] : false;
+
+        if ($this->maxFailedLoginAttempts) {
+            $this->failedLoginAttemptsQuery = $config['failedLoginAttemptsQuery'];
+            $this->failedLoginAttemptsUpdate = $config['failedLoginAttemptsUpdate'];
+            $this->bannedAtUpdate = $config['bannedAtUpdate'];
+        }
 	}
 
 
@@ -154,8 +186,17 @@ class sspmod_sqlauth_Auth_Source_SQL extends sspmod_core_Auth_UserPassBase {
 			/* No rows returned - invalid username/password. */
 			SimpleSAML\Logger::error('sqlauth:' . $this->authId .
 				': No rows in result set. Probably wrong username/password.');
+
+            if ($this->maxFailedLoginAttempts) {
+                $this->updateUserOnLoginFailed($username);
+            }
+
 			throw new SimpleSAML_Error_Error('WRONGUSERPASS');
 		}
+
+        if ($this->maxFailedLoginAttempts) {
+            $this->updateUserOnLoginSuccess($username);
+        }
 
 		/* Extract attributes. We allow the resultset to consist of multiple rows. Attributes
 		 * which are present in more than one row will become multivalued. NULL values and
@@ -189,5 +230,85 @@ class sspmod_sqlauth_Auth_Source_SQL extends sspmod_core_Auth_UserPassBase {
 
 		return $attributes;
 	}
+
+    /**
+     * @param string $username
+     * @throws Exception
+     */
+    protected function updateUserOnLoginFailed($username)
+    {
+        $db = $this->connect();
+
+        //Increase failedLoginAttempts
+        $failedLoginAttempts = $this->fetchFailedLoginAttempts($username);
+        try {
+            $sth = $db->prepare($this->failedLoginAttemptsUpdate);
+            $sth->execute(array('username' => $username, 'failedLoginAttempts' => ++$failedLoginAttempts));
+        } catch (PDOException $e) {
+            throw new Exception('sqlauth:' . $this->authId .
+                ': - Failed to prepare query: ' . $e->getMessage());
+        }
+
+        //Set bannedAt if max loginAttempts reached
+        try {
+            if ($failedLoginAttempts == $this->maxFailedLoginAttempts) {
+                $sth = $db->prepare($this->bannedAtUpdate);
+                $sth->execute(array('username' => $username, 'bannedAt' => date('Y-m-d H:i:s')));
+            }
+
+            if ($failedLoginAttempts >= $this->maxFailedLoginAttempts) {
+
+                throw new SimpleSAML_Error_Error('MAX_LOGIN_ATTEMPTS_REACHED');
+            }
+        } catch (PDOException $e) {
+            throw new Exception('sqlauth:' . $this->authId .
+                ': - Failed to prepare query: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * @param string $username
+     * @throws Exception
+     */
+    protected function updateUserOnLoginSuccess($username)
+    {
+        $db = $this->connect();
+
+        try {
+            $sth = $db->prepare($this->failedLoginAttemptsUpdate);
+            $sth->execute(array('username' => $username, 'failedLoginAttempts' => 0));
+
+            $sth = $db->prepare($this->bannedAtUpdate);
+            $sth->bindValue(":bannedAt", null, PDO::PARAM_NULL);
+            $sth->bindValue(":username", $username);
+            $sth->execute();
+        } catch (PDOException $e) {
+            throw new Exception('sqlauth:' . $this->authId .
+                ': - Failed to prepare query: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * @param $username
+     * @return int
+     * @throws Exception
+     */
+    protected function fetchFailedLoginAttempts($username)
+    {
+        $db = $this->connect();
+
+        $sth = $db->prepare($this->failedLoginAttemptsQuery);
+        $sth->execute(array('username' => $username));
+
+        $data = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!isset($data[0]['failedloginattempts'])) {
+
+            throw new Exception('sqlauth:' . $this->authId .
+                ': - Failed to get failedLoginAttempts for user: ' . $username);
+        }
+
+        return $data[0]['failedloginattempts'];
+    }
 
 }

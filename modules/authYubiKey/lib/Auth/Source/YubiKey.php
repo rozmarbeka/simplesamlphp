@@ -146,6 +146,10 @@ class sspmod_authYubiKey_Auth_Source_YubiKey extends SimpleSAML_Auth_Source {
 				return 'WRONGUSERPASS';
 			}
 
+			if ($e->getErrorCode() === 'MAX_LOGIN_ATTEMPTS_REACHED') {
+				return 'MAX_LOGIN_ATTEMPTS_REACHED';
+			}
+
 			/* Some other error occurred. Rethrow exception and let the generic error
 			 * handler deal with it.
 			 */

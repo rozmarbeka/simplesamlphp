@@ -985,4 +985,10 @@ $config = array(
      * The prefix we should use on our tables.
      */
     'store.sql.prefix' => 'SimpleSAMLphp',
+
+    /*
+     * Login attempt params
+     */
+    'login.maxAttempts' => 5,
+    'login.banPeriod' => 60 * 30 // 30 minutes.
 );

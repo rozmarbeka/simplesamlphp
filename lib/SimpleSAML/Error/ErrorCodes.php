@@ -51,6 +51,7 @@ class ErrorCodes
             'UNKNOWNCERT' => \SimpleSAML\Locale\Translate::noop('{error:title_UNKNOWNCERT}'),
             'USERABORTED' => \SimpleSAML\Locale\Translate::noop('{error:title_USERABORTED}'),
             'WRONGUSERPASS' => \SimpleSAML\Locale\Translate::noop('{error:title_WRONGUSERPASS}'),
+            'MAX_LOGIN_ATTEMPTS_REACHED' => \SimpleSAML\Locale\Translate::noop('{error:title_MAX_LOGIN_ATTEMPTS_REACHED}'),
         );
     }
 
@@ -109,6 +110,7 @@ class ErrorCodes
             'UNKNOWNCERT' => \SimpleSAML\Locale\Translate::noop('{error:descr_UNKNOWNCERT}'),
             'USERABORTED' => \SimpleSAML\Locale\Translate::noop('{error:descr_USERABORTED}'),
             'WRONGUSERPASS' => \SimpleSAML\Locale\Translate::noop('{error:descr_WRONGUSERPASS}'),
+            'MAX_LOGIN_ATTEMPTS_REACHED' => \SimpleSAML\Locale\Translate::noop('{error:descr_MAX_LOGIN_ATTEMPTS_REACHED}'),
         );
     }
 

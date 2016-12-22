@@ -39,6 +39,9 @@ class sspmod_sqlauth_Auth_Source_SQL extends sspmod_core_Auth_UserPassBase {
     /** @var int */
     private $maxFailedLoginAttempts;
 
+    /** @var int */
+    private $banPeriod;
+
 	/**
 	 * The query we should use to update failed login attempts count for the user.
 	 *
@@ -97,6 +100,7 @@ class sspmod_sqlauth_Auth_Source_SQL extends sspmod_core_Auth_UserPassBase {
 		$this->maxFailedLoginAttempts = isset($config['maxFailedLoginAttempts']) ? $config['maxFailedLoginAttempts'] : false;
 
         if ($this->maxFailedLoginAttempts) {
+            $this->banPeriod = $config['banPeriod'];
             $this->failedLoginAttemptsQuery = $config['failedLoginAttemptsQuery'];
             $this->failedLoginAttemptsUpdate = $config['failedLoginAttemptsUpdate'];
             $this->bannedAtUpdate = $config['bannedAtUpdate'];
@@ -185,7 +189,7 @@ class sspmod_sqlauth_Auth_Source_SQL extends sspmod_core_Auth_UserPassBase {
 		if (count($data) === 0) {
 			/* No rows returned - invalid username/password. */
 			SimpleSAML\Logger::error('sqlauth:' . $this->authId .
-				': No rows in result set. Probably wrong username/password.');
+				': No rows in result set. Probably wrong username/password for user ' . $username .'.');
 
             if ($this->maxFailedLoginAttempts) {
                 $this->updateUserOnLoginFailed($username);
@@ -259,8 +263,14 @@ class sspmod_sqlauth_Auth_Source_SQL extends sspmod_core_Auth_UserPassBase {
         //Set bannedAt if max loginAttempts reached
         try {
             if ($failedLoginAttempts == $this->maxFailedLoginAttempts) {
+                $banDate = new DateTime();
+
                 $sth = $db->prepare($this->bannedAtUpdate);
-                $sth->execute(array('username' => $username, 'bannedAt' => date('Y-m-d H:i:s')));
+                $sth->execute(array('username' => $username, 'bannedAt' => $banDate->format('Y-m-d H:i:s')));
+
+                $bannedUntil = $banDate->add(new DateInterval('PT' . $this->banPeriod . 'S'))->format('Y-m-d H:i:s');
+                SimpleSAML\Logger::error('sqlauth:' . $this->authId .
+                    ': Max login attempts reached, user banned. Login disabled until ' . $bannedUntil. ' for user ' . $username . '.');
             }
 
             if ($failedLoginAttempts >= $this->maxFailedLoginAttempts) {

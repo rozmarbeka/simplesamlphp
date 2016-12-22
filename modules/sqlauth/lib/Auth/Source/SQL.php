@@ -43,11 +43,11 @@ class sspmod_sqlauth_Auth_Source_SQL extends sspmod_core_Auth_UserPassBase {
     private $banPeriod;
 
 	/**
-	 * The query we should use to update failed login attempts count for the user.
+	 * The query we should use to update failed login attempts count and banned at time for the user.
 	 *
 	 * The username will be available as :username.
 	 */
-	private $failedLoginAttemptsQuery;
+	private $loginDataQuery;
 
 	/**
 	 * The query we should use to update failed login attempts count for the user.
@@ -101,7 +101,7 @@ class sspmod_sqlauth_Auth_Source_SQL extends sspmod_core_Auth_UserPassBase {
 
         if ($this->maxFailedLoginAttempts) {
             $this->banPeriod = $config['banPeriod'];
-            $this->failedLoginAttemptsQuery = $config['failedLoginAttemptsQuery'];
+            $this->loginDataQuery = $config['loginDataQuery'];
             $this->failedLoginAttemptsUpdate = $config['failedLoginAttemptsUpdate'];
             $this->bannedAtUpdate = $config['bannedAtUpdate'];
         }
@@ -242,15 +242,15 @@ class sspmod_sqlauth_Auth_Source_SQL extends sspmod_core_Auth_UserPassBase {
     protected function updateUserOnLoginFailed($username)
     {
         $db = $this->connect();
-
-        $failedLoginAttempts = $this->fetchFailedLoginAttempts($username);
+        $loginData = $this->fetchLoginData($username);
 
         //Incorrect username
-        if ($failedLoginAttempts === false) {
+        if ($loginData === false) {
 
             return;
         }
 
+        $failedLoginAttempts = $loginData['failedloginattempts'];
         try {
             //Increase failedLoginAttempts
             $sth = $db->prepare($this->failedLoginAttemptsUpdate);
@@ -262,18 +262,31 @@ class sspmod_sqlauth_Auth_Source_SQL extends sspmod_core_Auth_UserPassBase {
 
         //Set bannedAt if max loginAttempts reached
         try {
-            if ($failedLoginAttempts == $this->maxFailedLoginAttempts) {
-                $banDate = new DateTime();
+            $now = new DateTime();
+            $banPeriodInterval = new DateInterval('PT' . $this->banPeriod . 'S');
+            //Expand ban expiration on every max-th attempt
+            if ($failedLoginAttempts % $this->maxFailedLoginAttempts == 0) {
 
+                $bannedAt = clone $now;
                 $sth = $db->prepare($this->bannedAtUpdate);
-                $sth->execute(array('username' => $username, 'bannedAt' => $banDate->format('Y-m-d H:i:s')));
+                $sth->execute(array('username' => $username, 'bannedAt' => $bannedAt->format('Y-m-d H:i:s')));
 
-                $bannedUntil = $banDate->add(new DateInterval('PT' . $this->banPeriod . 'S'))->format('Y-m-d H:i:s');
                 SimpleSAML\Logger::error('sqlauth:' . $this->authId .
-                    ': Max login attempts reached, user banned. Login disabled until ' . $bannedUntil. ' for user \'' . $username . '\'.');
+                    ': Max login attempts reached, user banned. Login disabled until ' . $bannedAt->add($banPeriodInterval)->format('Y-m-d H:i:s'). ' for user \'' . $username . '\'.');
+
+                throw new SimpleSAML_Error_Error('MAX_LOGIN_ATTEMPTS_REACHED');
             }
 
-            if ($failedLoginAttempts >= $this->maxFailedLoginAttempts) {
+            $notBanned = is_null($loginData['bannedat']);
+            if ($notBanned) {
+
+                return;
+            }
+
+            //Show error if user is currently banned
+            $bannedAt = new DateTime($loginData['bannedat']);
+            $bannedUntil = $bannedAt->add($banPeriodInterval);
+            if ($bannedUntil > $now) {
 
                 throw new SimpleSAML_Error_Error('MAX_LOGIN_ATTEMPTS_REACHED');
             }
@@ -311,11 +324,11 @@ class sspmod_sqlauth_Auth_Source_SQL extends sspmod_core_Auth_UserPassBase {
      * @return int|false
      * @throws Exception
      */
-    protected function fetchFailedLoginAttempts($username)
+    protected function fetchLoginData($username)
     {
         $db = $this->connect();
 
-        $sth = $db->prepare($this->failedLoginAttemptsQuery);
+        $sth = $db->prepare($this->loginDataQuery);
         $sth->execute(array('username' => $username));
 
         $data = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -326,13 +339,13 @@ class sspmod_sqlauth_Auth_Source_SQL extends sspmod_core_Auth_UserPassBase {
             return false;
         }
 
-        if (!isset($data[0]['failedloginattempts'])) {
+        if (!isset($data[0]['failedloginattempts']) || !array_key_exists('bannedat', $data[0])) {
 
             throw new Exception('sqlauth:' . $this->authId .
-                ': - Failed to get failedLoginAttempts for user: ' . $username);
+                ': - Failed to get failedLoginAttempts and bannedAt for user: ' . $username);
         }
 
-        return $data[0]['failedloginattempts'];
+        return $data[0];
     }
 
 }

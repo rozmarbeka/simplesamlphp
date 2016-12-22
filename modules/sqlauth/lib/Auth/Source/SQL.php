@@ -239,9 +239,16 @@ class sspmod_sqlauth_Auth_Source_SQL extends sspmod_core_Auth_UserPassBase {
     {
         $db = $this->connect();
 
-        //Increase failedLoginAttempts
         $failedLoginAttempts = $this->fetchFailedLoginAttempts($username);
+
+        //Incorrect username
+        if ($failedLoginAttempts === false) {
+
+            return;
+        }
+
         try {
+            //Increase failedLoginAttempts
             $sth = $db->prepare($this->failedLoginAttemptsUpdate);
             $sth->execute(array('username' => $username, 'failedLoginAttempts' => ++$failedLoginAttempts));
         } catch (PDOException $e) {
@@ -283,6 +290,7 @@ class sspmod_sqlauth_Auth_Source_SQL extends sspmod_core_Auth_UserPassBase {
             $sth->bindValue(":username", $username);
             $sth->execute();
         } catch (PDOException $e) {
+
             throw new Exception('sqlauth:' . $this->authId .
                 ': - Failed to prepare query: ' . $e->getMessage());
         }
@@ -290,7 +298,7 @@ class sspmod_sqlauth_Auth_Source_SQL extends sspmod_core_Auth_UserPassBase {
 
     /**
      * @param $username
-     * @return int
+     * @return int|false
      * @throws Exception
      */
     protected function fetchFailedLoginAttempts($username)
@@ -301,6 +309,12 @@ class sspmod_sqlauth_Auth_Source_SQL extends sspmod_core_Auth_UserPassBase {
         $sth->execute(array('username' => $username));
 
         $data = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+        //Incorrect username
+        if (count($data) === 0) {
+
+            return false;
+        }
 
         if (!isset($data[0]['failedloginattempts'])) {
 

@@ -189,7 +189,7 @@ class sspmod_sqlauth_Auth_Source_SQL extends sspmod_core_Auth_UserPassBase {
 		if (count($data) === 0) {
 			/* No rows returned - invalid username/password. */
 			SimpleSAML\Logger::error('sqlauth:' . $this->authId .
-				': No rows in result set. Probably wrong username/password for user ' . $username .'.');
+				': No rows in result set. Probably wrong username/password for user \'' . $username .'\'.');
 
             if ($this->maxFailedLoginAttempts) {
                 $this->updateUserOnLoginFailed($username);
@@ -270,7 +270,7 @@ class sspmod_sqlauth_Auth_Source_SQL extends sspmod_core_Auth_UserPassBase {
 
                 $bannedUntil = $banDate->add(new DateInterval('PT' . $this->banPeriod . 'S'))->format('Y-m-d H:i:s');
                 SimpleSAML\Logger::error('sqlauth:' . $this->authId .
-                    ': Max login attempts reached, user banned. Login disabled until ' . $bannedUntil. ' for user ' . $username . '.');
+                    ': Max login attempts reached, user banned. Login disabled until ' . $bannedUntil. ' for user \'' . $username . '\'.');
             }
 
             if ($failedLoginAttempts >= $this->maxFailedLoginAttempts) {

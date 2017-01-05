@@ -123,7 +123,7 @@ if($onLoad !== '') {
 ?>
 <body<?php echo $onLoad; ?>>
 
-<div id="wrap" class="animated flipInX">
+<div id="wrap" class="animated fadeInDown">
 	
 	<div id="header">
 		<h1><img src="/<?php echo $this->data['baseurlpath'] ?>resources/icons/atlassoft7a.png" alt="Atlas Soft Dashboard" /> Dashboard</h1>

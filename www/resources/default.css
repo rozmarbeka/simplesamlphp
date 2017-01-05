@@ -12,6 +12,14 @@ body {
 	background: #ececec;
 	color: #333;
 	font: 83%/1.5 arial,tahoma,verdana,sans-serif;
+	overflow: hidden;
+}
+
+.animated {
+	-webkit-animation-duration: 0.75s; /* Safari 4+ */
+	-moz-animation-duration:    0.75s; /* Fx 5+ */
+	-o-animation-duration:      0.75s; /* Opera 12+ */
+	animation-duration:         0.75s; /* IE 10+, Fx 29+ */
 }
 
 .body-embed {

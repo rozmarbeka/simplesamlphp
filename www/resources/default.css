@@ -219,7 +219,7 @@ h6 {
 
 input {
 	border: 1px solid #ddd;
-	border-radius: 3px;
+	border-radius: 2px;
 	padding: 5px;
 	line-height: 1.5em;
 }
@@ -482,7 +482,7 @@ caption {
 .btn, .btnaddonright {
 	color: #000000;
 	border: 1px solid #eee;
-	border-radius: 3px;
+	border-radius: 2px;
 	background-color: #eee;
 	background-image: linear-gradient(#fcfcfc, #eee);
 	text-align: center;

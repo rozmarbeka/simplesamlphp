@@ -53,6 +53,7 @@ if(array_key_exists('header', $this->data)) {
 }
 ?></title>
 
+	<link rel="stylesheet" type="text/css" href="/<?php echo $this->data['baseurlpath']; ?>resources/animate.css" />
 	<link rel="stylesheet" type="text/css" href="/<?php echo $this->data['baseurlpath']; ?>resources/default.css" />
 	<link rel="icon" type="image/icon" href="/<?php echo $this->data['baseurlpath']; ?>resources/icons/favicon.ico" />
 
@@ -122,7 +123,7 @@ if($onLoad !== '') {
 ?>
 <body<?php echo $onLoad; ?>>
 
-<div id="wrap">
+<div id="wrap" class="animated flipInX">
 	
 	<div id="header">
 		<h1><img src="/<?php echo $this->data['baseurlpath'] ?>resources/icons/atlassoft7a.png" alt="Atlas Soft Dashboard" /> Dashboard</h1>

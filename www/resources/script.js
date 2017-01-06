@@ -39,3 +39,16 @@ function SimpleSAML_hide(id) {
 
   element.style.display = 'none';
 }
+
+$(document).ready(function(){
+  $('form.login-form').submit(function() {
+    $('.progress-indicator').show();
+    var postData = $(this).serialize();
+    $.post(window.location, postData, function(response) {
+      $('body').append('<div id="submitDiv" style="visibility: hidden">' + response + '</div>');
+      $('#submitDiv form').submit();
+    });
+
+    return false;
+  });
+});

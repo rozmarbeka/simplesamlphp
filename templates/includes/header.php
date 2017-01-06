@@ -44,6 +44,25 @@ header('X-Frame-Options: SAMEORIGIN');
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+<?php
+if(!empty($jquery)) {
+	$version = '1.8';
+	if (array_key_exists('version', $jquery))
+		$version = $jquery['version'];
+
+	if ($version == '1.8') {
+		if (isset($jquery['core']) && $jquery['core'])
+			echo('<script type="text/javascript" src="/' . $this->data['baseurlpath'] . 'resources/jquery-1.8.js"></script>' . "\n");
+
+		if (isset($jquery['ui']) && $jquery['ui'])
+			echo('<script type="text/javascript" src="/' . $this->data['baseurlpath'] . 'resources/jquery-ui-1.8.js"></script>' . "\n");
+
+		if (isset($jquery['css']) && $jquery['css'])
+			echo('<link rel="stylesheet" media="screen" type="text/css" href="/' . $this->data['baseurlpath'] .
+				'resources/uitheme1.8/jquery-ui.css" />' . "\n");
+	}
+}
+?>
 <script type="text/javascript" src="/<?php echo $this->data['baseurlpath']; ?>resources/script.js"></script>
 <title><?php
 if(array_key_exists('header', $this->data)) {
@@ -58,24 +77,6 @@ if(array_key_exists('header', $this->data)) {
 	<link rel="icon" type="image/icon" href="/<?php echo $this->data['baseurlpath']; ?>resources/icons/favicon.ico" />
 
 <?php
-
-if(!empty($jquery)) {
-	$version = '1.8';
-	if (array_key_exists('version', $jquery))
-		$version = $jquery['version'];
-		
-	if ($version == '1.8') {
-		if (isset($jquery['core']) && $jquery['core'])
-			echo('<script type="text/javascript" src="/' . $this->data['baseurlpath'] . 'resources/jquery-1.8.js"></script>' . "\n");
-	
-		if (isset($jquery['ui']) && $jquery['ui'])
-			echo('<script type="text/javascript" src="/' . $this->data['baseurlpath'] . 'resources/jquery-ui-1.8.js"></script>' . "\n");
-	
-		if (isset($jquery['css']) && $jquery['css'])
-			echo('<link rel="stylesheet" media="screen" type="text/css" href="/' . $this->data['baseurlpath'] . 
-				'resources/uitheme1.8/jquery-ui.css" />' . "\n");
-	}
-}
 
 if (isset($this->data['clipboard.js'])) {
 	echo '<script type="text/javascript" src="/'. $this->data['baseurlpath'] .
@@ -122,7 +123,7 @@ if($onLoad !== '') {
 }
 ?>
 <body<?php echo $onLoad; ?>>
-
+<div class="progress-indicator animated fadeIn"></div>
 <div id="wrap" class="animated fadeInDown">
 	
 	<div id="header">

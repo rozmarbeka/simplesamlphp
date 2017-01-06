@@ -95,6 +95,7 @@ $t->data['links'] = $source->getLoginLinks();
 $t->data['errorcode'] = $errorCode;
 $t->data['errorcodes'] = SimpleSAML\Error\ErrorCodes::getAllErrorCodeMessages();
 $t->data['errorparams'] = $errorParams;
+$t->data['jquery'] = array('core' => TRUE, 'ui' => FALSE, 'css' => FALSE);
 
 if (isset($state['SPMetadata'])) {
 	$t->data['SPMetadata'] = $state['SPMetadata'];

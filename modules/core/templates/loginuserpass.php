@@ -13,7 +13,7 @@ $this->includeAtTemplateBase('includes/header.php');
 <?php
 if ($this->data['errorcode'] !== null) {
     ?>
-    <div class="login-error">
+    <div class="login-error animated flipInX">
         <img src="/<?php echo $this->data['baseurlpath']; ?>resources/icons/experience/gtk-dialog-error.48x48.png"
              class="float-l erroricon" alt=""/>
 

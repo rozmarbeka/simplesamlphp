@@ -40,6 +40,7 @@ function SimpleSAML_hide(id) {
   element.style.display = 'none';
 }
 
+//Perform ajax login and show progress indicator as it's the future
 $(document).ready(function(){
   $('form.login-form').submit(function() {
     var postData = $(this).serialize();
@@ -50,12 +51,11 @@ $(document).ready(function(){
             $('#username').focus();
 
             return;
-        } else {
-            $('.progress-indicator').show();
         }
 
-      $('body').append('<div id="submitDiv" style="visibility: hidden">' + response + '</div>');
-      $('#submitDiv form').submit();
+        $('.progress-indicator').show();
+        $('body').append('<div id="submitDiv" style="visibility: hidden">' + response + '</div>');
+        $('#submitDiv form').submit();
     });
 
     return false;

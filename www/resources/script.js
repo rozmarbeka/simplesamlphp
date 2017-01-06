@@ -42,9 +42,18 @@ function SimpleSAML_hide(id) {
 
 $(document).ready(function(){
   $('form.login-form').submit(function() {
-    $('.progress-indicator').show();
     var postData = $(this).serialize();
     $.post(window.location, postData, function(response) {
+        if (response.indexOf('login-error') >= 0) {
+            var wrapHtml = $('<div/>').html(response).find('#wrap').html();
+            $('#wrap').html(wrapHtml);
+            $('#username').focus();
+
+            return;
+        } else {
+            $('.progress-indicator').show();
+        }
+
       $('body').append('<div id="submitDiv" style="visibility: hidden">' + response + '</div>');
       $('#submitDiv form').submit();
     });

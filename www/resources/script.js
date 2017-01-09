@@ -43,7 +43,13 @@ function SimpleSAML_hide(id) {
 //Perform ajax login and show progress indicator as it's the future
 $(document).ready(function(){
   $('form.login-form').submit(function() {
-    var postData = $(this).serialize();
+      if (!$(this.username).val() && !$(this.password).val()) {
+          $('#username').focus();
+
+          return false;
+      }
+
+      var postData = $(this).serialize();
     $.post(window.location, postData, function(response) {
         if (response.indexOf('login-error') >= 0) {
             var wrapHtml = $('<div/>').html(response).find('#wrap').html();

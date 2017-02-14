@@ -125,6 +125,7 @@ dt {
 
 #header h1 {
 	text-transform: uppercase;
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
 	color: #3185ab;
 	font-size: 15.5px;
 	padding: 20px 20px 12px;
@@ -133,6 +134,7 @@ dt {
 }
 
 #header h1 img {
+	-webkit-filter: drop-shadow(1px 1px 1px rgba(0,0,0,1));
 	display: inline-block;
 	margin-bottom: -1px;
 }

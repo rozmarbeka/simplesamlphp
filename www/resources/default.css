@@ -98,6 +98,10 @@ dt {
 	max-width: 600px;
 	border-radius: 3px;
 	overflow: hidden;
+	-webkit-animation-duration: 0.45s !important;
+    -moz-animation-duration: 0.45s !important;
+    -o-animation-duration: 0.45s !important;
+	animation-duration: 0.45s !important;
 }
 
 #languagebar {

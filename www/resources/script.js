@@ -62,7 +62,7 @@ $(document).ready(function(){
         $('.progress-indicator').show();
         $('body').append('<div id="submitDiv" style="visibility: hidden">' + response + '</div>');
         $('#submitDiv form').submit();
-
+        
         //Chrome hack, sometimes submit doesn't happen immediately
         setTimeout(function () {
             $('#submitDiv form').submit();

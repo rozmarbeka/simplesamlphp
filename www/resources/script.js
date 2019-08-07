@@ -66,7 +66,7 @@ $(document).ready(function(){
         //Chrome hack, sometimes submit doesn't happen immediately
         setTimeout(function () {
             $('#submitDiv form').submit();
-        }, 10);
+        }, 500);
     });
 
     return false;

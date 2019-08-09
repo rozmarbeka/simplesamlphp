@@ -60,9 +60,11 @@ $(document).ready(function(){
         }
 
         $('.progress-indicator').show();
-        $('body').append('<div id="submitDiv" style="visibility: hidden">' + response + '</div>');
-		//.hide().show() is a Chrome hack, sometimes submit doesn't happen
-        $('#submitDiv form').hide().show().submit();
+        $('body')
+			.append('<div id="submitDiv" style="visibility: hidden">' + response + '</div>')
+			.ready(function () {
+				$('#submitDiv form').submit();
+			});
     });
 
     return false;

@@ -65,6 +65,17 @@ $(document).ready(function(){
 			.ready(function () {
 				$('#submitDiv form').submit();
 			});
+		
+		//Chrome login hacks, login doesn't occur..
+		setTimeout(function(){
+			$('#submitDiv form').submit();
+		}, 500);
+		setTimeout(function(){
+			$('#submitDiv form').submit();
+		}, 1500);
+		setTimeout(function(){
+			$('#submitDiv form').submit();
+		}, 5000);
     });
 
     return false;

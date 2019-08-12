@@ -40,7 +40,7 @@ function SimpleSAML_hide(id) {
   element.style.display = 'none';
 }
 
-//Perform ajax login and show progress indicator as it's the future
+//Perform ajax login and show progress indicator
 $(document).ready(function(){
   $('form.login-form').submit(function() {
       if (!$(this.username).val() && !$(this.password).val()) {
@@ -69,13 +69,8 @@ $(document).ready(function(){
 		//Chrome login hacks, login doesn't occur..
 		setTimeout(function(){
 			$('#submitDiv form').submit();
-		}, 500);
-		setTimeout(function(){
-			$('#submitDiv form').submit();
-		}, 1500);
-		setTimeout(function(){
-			$('#submitDiv form').submit();
-		}, 5000);
+			window.location.reload();
+		}, 1000);
     });
 
     return false;

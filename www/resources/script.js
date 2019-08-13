@@ -51,8 +51,9 @@ $(document).ready(function(){
 
       var postData = $(this).serialize();
     $.post(window.location, postData, function(response) {
+		var html = $('<div id="submitDiv" style="visibility: hidden"></div>').html(response);
         if (response.indexOf('login-error') >= 0) {
-            var wrapHtml = $('<div/>').html(response).find('#wrap').html();
+            var wrapHtml = html.find('#wrap').html();
             $('#wrap').html(wrapHtml);
             $('#username').focus();
 
@@ -60,16 +61,13 @@ $(document).ready(function(){
         }
 
         $('.progress-indicator').show();
-        $('body')
-			.append('<div id="submitDiv" style="visibility: hidden">' + response + '</div>')
-			.ready(function () {
-				$('#submitDiv form').submit();
-			});
+		html.appendTo('body').ready(function() {
+			$('#submitDiv form').submit();
+		});
 		
 		//Chrome login hacks, login doesn't occur..
-		setTimeout(function(){
+		setTimeout(function() {
 			$('#submitDiv form').submit();
-			window.location.reload();
 		}, 3000);
     });
 

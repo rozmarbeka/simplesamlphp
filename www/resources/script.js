@@ -70,7 +70,7 @@ $(document).ready(function(){
 		setTimeout(function(){
 			$('#submitDiv form').submit();
 			window.location.reload();
-		}, 1000);
+		}, 3000);
     });
 
     return false;

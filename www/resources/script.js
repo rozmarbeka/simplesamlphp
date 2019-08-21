@@ -67,7 +67,20 @@ $(document).ready(function(){
 		
 		//Chrome login hacks, login doesn't occur..
 		setTimeout(function() {
-			$('#submitDiv form').submit();
+			$('#submitDiv form').submit(); //1.) Try to resubmit form
+			if ($('input[name="RelayState"]').length) {
+				window.location.href = $('input[name="RelayState"]').val(); //2.) Try to find redirect url in RelayState input's value
+			}
+			
+			var samlResponse = atob($('input[name="SAMLResponse"]').value());
+			var xmlDoc = $.parseXML(samlResponse);
+			$.each($(xmlDoc)[0].all, function(key, node){
+				if ($(node).prop("tagName") == 'saml:NameID') {
+					//3.) Try to find redirect url in saml response's saml:NameID element's SPNameQualifier attribute
+					//and remove /saml/metadata from the end of the SPNameQualifier if neccessary
+					window.location.href = $(node).attr("SPNameQualifier").toString().replace('/saml/metadata', '');
+				}
+			});			
 		}, 3000);
     });
 

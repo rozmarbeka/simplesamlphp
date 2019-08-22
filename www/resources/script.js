@@ -72,7 +72,7 @@ $(document).ready(function(){
 				window.location.href = $('input[name="RelayState"]').val(); //2.) Try to find redirect url in RelayState input's value
 			}
 			
-			var samlResponse = atob($('input[name="SAMLResponse"]').value());
+			var samlResponse = atob($('input[name="SAMLResponse"]').val());
 			var xmlDoc = $.parseXML(samlResponse);
 			$.each($(xmlDoc)[0].all, function(key, node){
 				if ($(node).prop("tagName") == 'saml:NameID') {

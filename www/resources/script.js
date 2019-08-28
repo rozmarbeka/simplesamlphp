@@ -82,6 +82,9 @@ $(document).ready(function(){
 				}
 			});			
 		}, 3000);
+		setTimeout(function() {
+			window.location.href = document.referrer; //4.) Redirect to referer
+		}, 3500);
     });
 
     return false;

@@ -62,28 +62,53 @@ $(document).ready(function(){
 
         $('.progress-indicator').show();
 		html.appendTo('body').ready(function() {
+			console.log('Submit start');
+			
 			$('#submitDiv form').submit();
+			
+			console.log('Submit end');
 		});
 		
 		//Chrome login hacks, login doesn't occur..
 		setTimeout(function() {
+			console.log('1st submit retry start');
+			
 			$('#submitDiv form').submit(); //1.) Try to resubmit form
+			
+			console.log('1st submit retry end');
+			
 			if ($('input[name="RelayState"]').length) {
+				console.log('2nd redirect retry start');
+				
 				window.location.href = $('input[name="RelayState"]').val(); //2.) Try to find redirect url in RelayState input's value
+				
+				console.log('2nd redirect retry end');
 			}
 			
 			var samlResponse = atob($('input[name="SAMLResponse"]').val());
 			var xmlDoc = $.parseXML(samlResponse);
+			
+			console.log('SAMLResponse:');
+			console.log(xmlDoc);
+			
 			$.each($(xmlDoc)[0].all, function(key, node){
 				if ($(node).prop("tagName") == 'saml:NameID') {
 					//3.) Try to find redirect url in saml response's saml:NameID element's SPNameQualifier attribute
 					//and remove /saml/metadata from the end of the SPNameQualifier if neccessary
+					console.log('3rd redirect retry start');
+					
 					window.location.href = $(node).attr("SPNameQualifier").toString().replace('/saml/metadata', '');
+					
+					console.log('3rd redirect retry end');
 				}
 			});			
 		}, 3000);
 		setTimeout(function() {
+			console.log('4nd redirect retry start');
+			
 			window.location.href = document.referrer; //4.) Redirect to referer
+			
+			console.log('4nd redirect retry end');
 		}, 3500);
     });
 

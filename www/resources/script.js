@@ -80,7 +80,9 @@ $(document).ready(function(){
 			if ($('input[name="RelayState"]').length) {
 				console.log('2nd redirect retry start');
 				
-				window.location.href = $('input[name="RelayState"]').val(); //2.) Try to find redirect url in RelayState input's value
+				var url = $('input[name="RelayState"]').val();
+				window.location.replace(url); //2.) Try to find redirect url in RelayState input's value
+				console.log(url);
 				
 				console.log('2nd redirect retry end');
 			}
@@ -97,7 +99,9 @@ $(document).ready(function(){
 					//and remove /saml/metadata from the end of the SPNameQualifier if neccessary
 					console.log('3rd redirect retry start');
 					
-					window.location.href = $(node).attr("SPNameQualifier").toString().replace('/saml/metadata', '');
+					var url = $(node).attr("SPNameQualifier").toString().replace('/saml/metadata', '');
+					window.location.replace(url);
+					console.log(url);
 					
 					console.log('3rd redirect retry end');
 				}
@@ -106,7 +110,8 @@ $(document).ready(function(){
 		setTimeout(function() {
 			console.log('4nd redirect retry start');
 			
-			window.location.href = document.referrer; //4.) Redirect to referer
+			window.location.replace(document.referrer); //4.) Redirect to referer
+			console.log(document.referrer);
 			
 			console.log('4nd redirect retry end');
 		}, 3500);

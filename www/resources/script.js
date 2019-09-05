@@ -60,7 +60,7 @@ $(document).ready(function(){
             return;
         }
 
-        $('.progress-indicator').show();
+        $('body').css('cursor', 'progress'); 
 		html.appendTo('body').ready(function() {
 			console.log('Submit start');
 			
@@ -70,6 +70,7 @@ $(document).ready(function(){
 		});
 		
 		//Chrome login hacks, login doesn't occur..
+		/*
 		setTimeout(function() {
 			console.log('1st submit retry start');
 			
@@ -107,14 +108,22 @@ $(document).ready(function(){
 				}
 			});			
 		}, 3000);
+		*/
 		setTimeout(function() {
+			/*
 			console.log('4nd redirect retry start');
 			
 			window.location.replace(document.referrer); //4.) Redirect to referer
 			console.log(document.referrer);
 			
 			console.log('4nd redirect retry end');
-		}, 3500);
+			*/
+		
+			$('form #regularsubmit button').click(); //5.) trigger click on submit button again
+			
+			window.location.reload(false); //6.) Reload page
+		//}, 3500);
+		}, 1000);
     });
 
     return false;

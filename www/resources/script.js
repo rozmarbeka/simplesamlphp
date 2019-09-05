@@ -48,8 +48,9 @@ $(document).ready(function(){
 
           return false;
       }
-
-      var postData = $(this).serialize();
+	  
+	$('body').css('cursor', 'progress'); 
+    var postData = $(this).serialize();
     $.post(window.location, postData, function(response) {
 		var html = $('<div id="submitDiv" style="visibility: hidden"></div>').html(response);
         if (response.indexOf('login-error') >= 0) {

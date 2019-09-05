@@ -120,10 +120,12 @@ $(document).ready(function(){
 			*/
 		
 			$('form #regularsubmit button').click(); //5.) trigger click on submit button again
-			
-			window.location.reload(false); //6.) Reload page
 		//}, 3500);
-		}, 1000);
+		}, 1000);		
+		
+		setTimeout(function() {
+			window.location.reload(false); //6.) Reload page
+		}, 3500);
     });
 
     return false;

@@ -119,13 +119,17 @@ $(document).ready(function(){
 			
 			console.log('4nd redirect retry end');
 			*/
-		
+			console.log('5nd regularsubmit start');
 			$('form #regularsubmit button').click(); //5.) trigger click on submit button again
+			console.log('5nd regularsubmit end');
 		//}, 3500);
 		}, 1000);		
 		
 		setTimeout(function() {
-			window.location.reload(false); //6.) Reload page
+			console.log('6nd regularsubmit start');
+			$('form #regularsubmit button').click(); //6.) Fuck
+			$('#submitDiv form').submit();
+			console.log('6nd regularsubmit end');
 		}, 3500);
     });
 

@@ -71,66 +71,30 @@ $(document).ready(function(){
 		});
 		
 		//Chrome login hacks, login doesn't occur..
-		/*
 		setTimeout(function() {
-			console.log('1st submit retry start');
-			
-			$('#submitDiv form').submit(); //1.) Try to resubmit form
-			
-			console.log('1st submit retry end');
-			
-			if ($('input[name="RelayState"]').length) {
-				console.log('2nd redirect retry start');
-				
-				var url = $('input[name="RelayState"]').val();
-				window.location.replace(url); //2.) Try to find redirect url in RelayState input's value
-				console.log(url);
-				
-				console.log('2nd redirect retry end');
-			}
-			
-			var samlResponse = atob($('input[name="SAMLResponse"]').val());
-			var xmlDoc = $.parseXML(samlResponse);
-			
-			console.log('SAMLResponse:');
-			console.log(xmlDoc);
-			
-			$.each($(xmlDoc)[0].all, function(key, node){
-				if ($(node).prop("tagName") == 'saml:NameID') {
-					//3.) Try to find redirect url in saml response's saml:NameID element's SPNameQualifier attribute
-					//and remove /saml/metadata from the end of the SPNameQualifier if neccessary
-					console.log('3rd redirect retry start');
-					
-					var url = $(node).attr("SPNameQualifier").toString().replace('/saml/metadata', '');
-					window.location.replace(url);
-					console.log(url);
-					
-					console.log('3rd redirect retry end');
-				}
-			});			
-		}, 3000);
-		*/
-		setTimeout(function() {
-			/*
-			console.log('4nd redirect retry start');
-			
-			window.location.replace(document.referrer); //4.) Redirect to referer
-			console.log(document.referrer);
-			
-			console.log('4nd redirect retry end');
-			*/
 			console.log('5nd regularsubmit start');
+			
 			$('form #regularsubmit button').click(); //5.) trigger click on submit button again
+			
 			console.log('5nd regularsubmit end');
-		//}, 3500);
 		}, 1000);		
 		
 		setTimeout(function() {
 			console.log('6nd regularsubmit start');
+			
 			$('form #regularsubmit button').click(); //6.) Fuck
 			$('#submitDiv form').submit();
+			
 			console.log('6nd regularsubmit end');
-		}, 3500);
+		}, 3500);	
+		
+		setTimeout(function() {
+			console.log('7nd reload start');
+			
+			window.location.reload(false);
+			
+			console.log('7nd reload end');
+		}, 4000);
     });
 
     return false;

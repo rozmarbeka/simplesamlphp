@@ -82,19 +82,12 @@ $(document).ready(function(){
 		setTimeout(function() {
 			console.log('6nd regularsubmit start');
 			
+			$('form.login-form').submit();
 			$('form #regularsubmit button').click(); //6.) Fuck
 			$('#submitDiv form').submit();
 			
 			console.log('6nd regularsubmit end');
-		}, 3500);	
-		
-		setTimeout(function() {
-			console.log('7nd reload start');
-			
-			window.location.reload(false);
-			
-			console.log('7nd reload end');
-		}, 4000);
+		}, 3500);
     });
 
     return false;

@@ -51,6 +51,7 @@ $(document).ready(function(){
 	  
 	$('body').css('cursor', 'progress'); 
     var postData = $(this).serialize();
+	
     $.post(window.location, postData, function(response) {
 		var html = $('<div id="submitDiv" style="visibility: hidden"></div>').html(response);
         if (response.indexOf('login-error') >= 0) {
@@ -61,33 +62,11 @@ $(document).ready(function(){
             return;
         }
 
-        $('body').css('cursor', 'progress'); 
-		html.appendTo('body').ready(function() {
-			console.log('Submit start');
-			
+		$('.progress-indicator').show();		
+        $('body').css('cursor', 'progress');
+		html.appendTo('body').ready(function() {			
 			$('#submitDiv form').submit();
-			
-			console.log('Submit end');
 		});
-		
-		//Chrome login hacks, login doesn't occur..
-		setTimeout(function() {
-			console.log('5nd regularsubmit start');
-			
-			$('form #regularsubmit button').click(); //5.) trigger click on submit button again
-			
-			console.log('5nd regularsubmit end');
-		}, 1000);		
-		
-		setTimeout(function() {
-			console.log('6nd regularsubmit start');
-			
-			$('form.login-form').submit();
-			$('form #regularsubmit button').click(); //6.) Fuck
-			$('#submitDiv form').submit();
-			
-			console.log('6nd regularsubmit end');
-		}, 3500);
     });
 
     return false;

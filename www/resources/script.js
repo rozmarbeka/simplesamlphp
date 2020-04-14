@@ -41,7 +41,15 @@ function SimpleSAML_hide(id) {
 }
 
 //Perform ajax login and show progress indicator
-$(document).ready(function(){
+$(document).ready(function() {
+	setTimeout(function() {
+		var authStateStrings = $("input[name='AuthState']").val().split(':');
+		authStateStrings.splice(0, 1);
+		var urlParams = new URLSearchParams(decodeURIComponent(authStateStrings.join(':')));
+		var baseLoginUrl = urlParams.get('RelayState');
+		window.location.href = baseLoginUrl; // refresh login state, login occurs for the second time only workaround..
+	}, 60 * 60 * 1000); // 1 hour
+		
   $('form.login-form').submit(function() {
       if (!$(this.username).val() && !$(this.password).val()) {
           $('#username').focus();
@@ -65,28 +73,22 @@ $(document).ready(function(){
         $('body').css('cursor', 'progress'); 
 		html.appendTo('body').ready(function() {
 			console.log('Submit start');
-			
 			$('#submitDiv form').submit();
-			
 			console.log('Submit end');
 		});
 		
 		//Chrome login hacks, login doesn't occur..
 		setTimeout(function() {
 			console.log('5nd regularsubmit start');
-			
 			$('form #regularsubmit button').click();
-			
 			console.log('5nd regularsubmit end');
 		}, 1000);		
 		
 		setTimeout(function() {
 			console.log('6nd regularsubmit start');
-			
 			$('form.login-form').submit();
 			$('form #regularsubmit button').click();
 			$('#submitDiv form').submit();
-			
 			console.log('6nd regularsubmit end');
 		}, 3500);
     });

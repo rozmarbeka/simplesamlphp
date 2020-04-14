@@ -47,7 +47,9 @@ $(document).ready(function() {
 		authStateStrings.splice(0, 1);
 		var urlParams = new URLSearchParams(decodeURIComponent(authStateStrings.join(':')));
 		var baseLoginUrl = urlParams.get('RelayState');
-		window.location.href = baseLoginUrl; // refresh login state, login occurs for the second time only workaround..
+		if (baseLoginUrl) {
+			window.location.href = baseLoginUrl; // refresh login state, login occurs for the second time only workaround..
+		}
 	}, 60 * 60 * 1000); // 1 hour
 		
   $('form.login-form').submit(function() {
